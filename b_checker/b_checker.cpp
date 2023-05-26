@@ -16,7 +16,6 @@ struct brackets_holder {
     }
 } brackets{ "<[(" , ">])" }; // brackets order is important
 
-//const brackets_holder brackets{ "<[(" , ">])" };
 bool verify(const string&);
 int verify_frame(const char, int, const string&);
 
