@@ -12,31 +12,31 @@ namespace UnitTests
 
 		TEST_METHOD(TestMethod1)
 		{
-			Assert::AreEqual(verify("before ( middle []) after "), 1);
+			Assert::AreEqual(verify("before ( middle []) after "), true);
 		}
 		TEST_METHOD(TestMethod2)
 		{
-			Assert::AreEqual(verify("---(++++)----"), 1);
+			Assert::AreEqual(verify("---(++++)----"), true);
 		}
 		TEST_METHOD(TestMethod3)
 		{
-			Assert::AreEqual(verify(""), 1);
+			Assert::AreEqual(verify(""), true);
 		}
 		TEST_METHOD(TestMethod4)
 		{
-			Assert::AreEqual(verify(") ("), 0);
+			Assert::AreEqual(verify(") ("), false);
 		}
 		TEST_METHOD(TestMethod5)
 		{
-			Assert::AreEqual(verify("<(   >)"), 0);
+			Assert::AreEqual(verify("<(   >)"), false);
 		}
 		TEST_METHOD(TestMethod6)
 		{
-			Assert::AreEqual(verify("(  [  <>  ()  ]  <>  )"), 1);
+			Assert::AreEqual(verify("(  [  <>  ()  ]  <>  )"), true);
 		}
 		TEST_METHOD(TestMethod7)
 		{
-			Assert::AreEqual(verify("   (      [)"), 0);
+			Assert::AreEqual(verify("   (      [)"), false);
 		}
 	};
 }
