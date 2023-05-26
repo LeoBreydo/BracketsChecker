@@ -1,20 +1,52 @@
-// b_checker.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <string>
+
+using namespace std;
+
+// symbol order is important
+const string open_brackets = "<[(", close_brackets = ">])";
+int verify(const string&);
+int verify_frame(const char, int, const string&);
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    // tests
+    std::cout << verify("before ( middle []) after ") << "=" << 1 << "\n";
+    std::cout << verify("---(++++)----") << "=" << 1 << "\n";
+    std::cout << verify("") << "=" << 1 << "\n";
+    std::cout << verify(") (") << "=" << 0 << "\n";
+    std::cout << verify("<(   >)") << "=" << 0 << "\n";
+    std::cout << verify("(  [  <>  ()  ]  <>  )") << "=" << 1 << "\n";
+    std::cout << verify("   (      [)") << "=" << 0 << "\n";
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+int verify(const string& text) {
+    auto i = 0;
+    while (i < text.length()) {
+        auto ch = text[i];
+        if (close_brackets.find(ch) != string::npos) return 0; // Failure: forbidden symbol detected 
+        auto index = open_brackets.find(ch);
+        if (index != string::npos) { // new frame detected
+            i = verify_frame(close_brackets[index], ++i, text);
+            if (i == -1) return 0; // Failure: nested frame is bad
+        }
+        ++i;
+    }
+    return 1; // Success
+}
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+int verify_frame(const char expected, int i, const string& text) {
+    while (i < text.length()) {
+        auto ch = text[i];
+        if (close_brackets.find(ch) != string::npos) return ch == expected ? i : -1;
+        auto index = open_brackets.find(ch);
+        if (index != string::npos) { // nested frame detected
+            i = verify_frame(close_brackets[index], ++i, text); // recursion
+            if (i == -1) return -1; // Failure: nested frame is bad :(
+        }
+        ++i;
+    }
+    return -1; // Failure: current frame is not closed
+}
+
+
