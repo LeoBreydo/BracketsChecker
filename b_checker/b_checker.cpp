@@ -32,7 +32,7 @@ int main()
 }
 
 bool verify(const string& text) {
-    auto i{0}, index{0};
+    auto i{0};
     while (i < text.length()) {
         auto ch = text[i];
         if (brackets.is_closed_bracket(ch)) return false; // Failure: forbidden symbol detected         
@@ -46,8 +46,7 @@ bool verify(const string& text) {
     return true; // Success
 }
 
-int verify_frame(const char expected, int i, const string& text) {
-    auto index{0};
+int verify_frame(const char expected, int i, const string& text) {    
     while (i < text.length()) {
         auto ch = text[i];
         if (brackets.is_closed_bracket(ch)) return ch == expected ? i : -1;
